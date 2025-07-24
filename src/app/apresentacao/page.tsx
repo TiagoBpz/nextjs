@@ -38,29 +38,22 @@ export default function Home() {
   };
 
 
-  const colaboradores = {
-    "Cleiton Assis Pinto": {
-      nome: "Cleiton Assis Pinto",
-      idade: 45,
-      formacao: "Cuidador de idosos sênior",
-      email: "cleiton.pinto@gmail.com",
-      imagem: "/colaboradores/cleiton.png", 
-    },
-    "Larissa Taxad": {
-      nome: "Larissa Taxad",
-      idade: 27,
-      formacao: "Auxiliar de vida sênior",
-      email: "larissa.taxad@gmail.com",
-      imagem: '/colaboradores/larissa.png',
-    },
-    "Jair Messiano": {
-      nome: "Jair Messiano",
-      idade: 40,
-      formacao: "Auxiliar de cuidador de idosos",
-      email: "jair.messiano@gmail.com",
-      imagem: '/colaboradores/jair.png',
-    },
+  type CuidadorInfo = {
+    nome: string;
+    idade: number;
+    formacao: string;
+    email: string;
+    imagem: string;
   };
+
+  const cuidadores: Record<string, CuidadorInfo> = {
+    "Cleiton Assis Pinto": { nome: "Cleiton", idade: 25, formacao: "Auxiliar de cuidador de idosos", email: "cleiton.assis@gmail.com", imagem: "/colaboradores/cleiton.png" },
+    "Larissa Taxad": { nome: "Larissa", idade: 27, formacao: "Auxiliar de vida sênior", email: "larissa.taxad@gmail.com", imagem: "/colaboradores/larissa.png" },
+    "Jair Messiano": { nome: "Jair", idade: 40, formacao: "Cuidador de idosos sênior", email: "jair.messias@gmail.com", imagem: "/colaboradores/jair.png" },
+  };
+
+  const nomeCuidador: string = "Larissa Taxad";
+  const dados = cuidadores[nomeCuidador]; // ✅ OK agora
 
   const abrirModal = (nome: string) => {
     setColaboradorSelecionado(nome);
@@ -112,24 +105,17 @@ export default function Home() {
       {/* Ícones com Botões */}
       <section className={styles.section}>
         <div className={styles.buttonGroup}>
-          <button
-            className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'missao' ? styles.ativo : ''}`}
-            onClick={() => setBotaoAtivo(botaoAtivo === 'missao' ? null : 'missao')}
-          >
-            {botaoAtivo === null && <Image src={objetivoImg} alt='Objetivo' className={styles.iconImage} />}
-            {botaoAtivo === 'missao' && <Image src={objetivoImg} alt='Objetivo' className={styles.iconAtivo} />}
+          <button className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'missao' ? styles.ativo : ''}`}
+            onClick={() => setBotaoAtivo(botaoAtivo === 'missao' ? null : 'missao')}>
+            <Image src={objetivoImg} alt='Objetivo' className={botaoAtivo === 'missao' ? styles.iconAtivo : styles.iconImage} />
             <span className={styles.buttonLabel}>MISSÃO</span>
             {botaoAtivo === 'missao' && (
               <p className={styles.buttonText}>{conteudos.missao}</p>
-            )}
-          </button>
+            )}</button>
 
-          <button
-            className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'valores' ? styles.ativo : ''}`}
-            onClick={() => setBotaoAtivo(botaoAtivo === 'valores' ? null : 'valores')}
-          >
-            {botaoAtivo === null && <Image src={cuidadoImg} alt='Cuidado' className={styles.iconImage} />}
-            {botaoAtivo === 'valores' && <Image src={cuidadoImg} alt='Cuidado' className={styles.iconAtivo} />}
+          <button className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'valores' ? styles.ativo : ''}`}
+           onClick={() => setBotaoAtivo(botaoAtivo === 'valores' ? null : 'valores')}>
+            <Image src={cuidadoImg} alt='valores' className={botaoAtivo === 'valores' ? styles.iconAtivo : styles.iconImage} />
             <span className={styles.buttonLabel}>VALORES</span>
             {botaoAtivo === 'valores' && (
               <p className={styles.buttonText}>{conteudos.valores}</p>
@@ -138,10 +124,8 @@ export default function Home() {
 
           <button
             className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'filosofia' ? styles.ativo : ''}`}
-            onClick={() => setBotaoAtivo(botaoAtivo === 'filosofia' ? null : 'filosofia')}
-          >
-            {botaoAtivo === null && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconImage} />}
-            {botaoAtivo === 'filosofia' && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconAtivo} />}
+            onClick={() => setBotaoAtivo(botaoAtivo === 'filosofia' ? null : 'filosofia')}>
+             <Image src={localizacaoImg} alt='filosofia' className={botaoAtivo === 'filosofia' ? styles.iconAtivo : styles.iconImage} />
             <span className={styles.buttonLabel}>FILOSOFIA</span>
             {botaoAtivo === 'filosofia' && (
               <p className={styles.buttonText}>{conteudos.filosofia}</p>
@@ -153,7 +137,7 @@ export default function Home() {
         <div className={styles.colaboradores}>
           <h2>CONHEÇA NOSSOS COLABORADORES</h2>
           <div className={styles.names}>
-            {Object.keys(colaboradores).map((nome) => (
+            {Object.keys(cuidadores).map((nome) => (
               <div key={nome} className={styles.person} onClick={() => abrirModal(nome)}>
                 <Image src={user} alt='user' className={styles.iconImage} />
                 {nome}
@@ -164,29 +148,29 @@ export default function Home() {
       </section>
 
       {/* Modal */}
-     {modalAberto && colaboradorSelecionado && (
-  <div className={styles.modalOverlay} onClick={fecharModal}>
-    <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-      <Image
-        src={colaboradores[colaboradorSelecionado].imagem}
-        alt="Foto do colaborador"
-        className={styles.modalImage}
-        width={180}
-        height={180}
-      />
-      <div className={styles.modalInfoContainer}>
-        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].nome}</div>
-        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].idade} anos</div>
-        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].formacao}</div>
-        <div className={styles.modalInfo}>
-          <a href={`mailto:${colaboradores[colaboradorSelecionado].email}`}>
-            {colaboradores[colaboradorSelecionado].email}
-          </a>
+      {modalAberto && colaboradorSelecionado && (
+        <div className={styles.modalOverlay} onClick={fecharModal}>
+          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={cuidadores[colaboradorSelecionado].imagem}
+              alt="Foto do colaborador"
+              className={styles.modalImage}
+              width={180}
+              height={180}
+            />
+            <div className={styles.modalInfoContainer}>
+              <div className={styles.modalInfo}>{cuidadores[colaboradorSelecionado].nome}</div>
+              <div className={styles.modalInfo}>{cuidadores[colaboradorSelecionado].idade} anos</div>
+              <div className={styles.modalInfo}>{cuidadores[colaboradorSelecionado].formacao}</div>
+              <div className={styles.modalInfo}>
+                <a href={`mailto:${cuidadores[colaboradorSelecionado].email}`}>
+                  {cuidadores[colaboradorSelecionado].email}
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
       {/* Footer */}
       <footer className={`${styles.footer} ${cinzel.className}`}>

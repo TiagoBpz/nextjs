@@ -1,49 +1,44 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { api } from "@/api/api";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./ListaIdosos.module.css";
 import logo from "../assets/logo.png";
-import userp from "../assets/userp.png";
-import user from "../assets/user.png";
+import userIcon from "../assets/user.png"; // ícone genérico para cuidador
 
-
-
-interface Idoso {
-  nome: string;
-  nascimento: string;
-  quarto: string;
-  especificacoes?: string;
-  cuidador: {
-    nome: string;
-    imagem: any;
-  };
+interface IdosoFromAPI {
+  id: number;
+  name: string;
+  bornAge: string;
+  image: string;
+  roomNumber: number;
+  caregiverName: string;
+  especialConditions: string;
 }
 
-const idosos: Idoso[] = [
-  {
-    nome: "nome",
-    nascimento: "data de nasc.",
-    quarto: "Quarto",
-    especificacoes: "Especificações, se tiver",
-    cuidador: {
-      nome: "Jair Messiano",
-      imagem: user,
-    },
-  },
-  {
-    nome: "nome",
-    nascimento: "data de nasc.",
-    quarto: "Quarto",
-    especificacoes: "Especificações, se tiver",
-    cuidador: {
-      nome: "Larissa Taxad",
-      imagem: user,
-    },
-  },
-];
-
 export default function ListaIdosos() {
+  const [list, setList] = useState<IdosoFromAPI[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchList() {
+      try {
+        const response = await api.get("/list"); // sua API deve responder com todos os registros da tabela
+        setList(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar lista:", error);
+        setError("Erro ao carregar listas");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchList();
+  }, []);
+
   return (
     <main className={styles.container}>
       {/* Navbar */}
@@ -51,34 +46,47 @@ export default function ListaIdosos() {
         <Link href="/apresentacao">
           <Image src={logo} alt="logo" className={styles.navbarIcon} />
         </Link>
-        <Image src={user} alt="usuário" className={styles.navbarIcon} />
+        <Image src={userIcon} alt="usuário" className={styles.navbarIcon} />
       </nav>
 
       <h2 className={styles.titulo}>Lista de Idosos</h2>
 
+      {loading && <p>Carregando...</p>}
+      {error && <p className={styles.error}>{error}</p>}
+
       <div className={styles.lista}>
-        {idosos.map((idoso, index) => (
-          <div key={index} className={styles.card}>
+        {list.map((idoso) => (
+          <div key={idoso.id} className={styles.card}>
             <div className={styles.perfil}>
-              <Image src={userp} alt="user icon" className={styles.iconp} />
-              <div className={styles.infoCinza}>{idoso.nome}</div>
-              <div className={styles.infoCinza}>{idoso.nascimento}</div>
-              <button className={styles.botaoRotina}>Visualizar lista de rotina</button>
+              {/* Imagem do idoso */}
+              <Image
+                src={idoso.image}
+                alt={`Foto de ${idoso.name}`}
+                className={styles.iconp}
+                width={80}
+                height={80}
+                unoptimized // usar isso se ainda não quiser configurar domínio externo
+              />
+              <div className={styles.infoCinza}>{idoso.name}</div>
+              <div className={styles.infoCinza}>{idoso.bornAge}</div>
+              <button className={styles.botaoRotina}>
+                Visualizar lista de rotina
+              </button>
             </div>
 
-            <div className={styles.infoCinza}>{idoso.quarto}</div>
+            <div className={styles.infoCinza}>Quarto {idoso.roomNumber}</div>
             <div className={styles.descricao}>
-              {idoso.especificacoes || "Sem especificações."}
+              {idoso.especialConditions || "Sem especificações."}
             </div>
 
             <span className={styles.labelCuidador}>CUIDADOR(A) RESPONSÁVEL:</span>
             <div className={styles.cuidador}>
               <Image
-                src={idoso.cuidador.imagem}
-                alt={idoso.cuidador.nome}
+                src={userIcon}
+                alt={`Cuidador(a): ${idoso.caregiverName}`}
                 className={styles.imgPequena}
               />
-              <span>{idoso.cuidador.nome}</span>
+              <span>{idoso.caregiverName}</span>
             </div>
           </div>
         ))}

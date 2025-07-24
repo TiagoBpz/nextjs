@@ -69,6 +69,7 @@
   font-family: 'Cinzel', serif;
   margin-bottom: 7vh;
   text-align: center;
+  font-size: x-large;
 }
 
 /* BOTÕES COM ÍCONES */
@@ -155,7 +156,7 @@
 
 .iconAtivo {
   width: 60px;
-  height: 60px;
+  height: 100px;
   margin-bottom: 8px;
   align-self: center;
   padding-top: 10px;
@@ -343,4 +344,6 @@
 .socialIcon:hover {
   transform: scale(1.1);
 }
+
+
 
