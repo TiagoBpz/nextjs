@@ -12,6 +12,7 @@ import { Cinzel } from 'next/font/google';
 import insta from '../assets/instagram.png';
 import face from '../assets/facebook.png';
 import zap from '../assets/whatsapp.png';
+import Link from 'next/link';
 
 const imagensCarrossel = [
   '/c1/carrossel1.png',
@@ -19,16 +20,16 @@ const imagensCarrossel = [
   '/c1/carrossel3.png',
 ];
 
-
 const cinzel = Cinzel({
   subsets: ['latin'],
   weight: ['400', '700'],
 });
 
-
 export default function Home() {
   const [indexAtual, setIndexAtual] = useState(0);
   const [botaoAtivo, setBotaoAtivo] = useState<string | null>(null);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [colaboradorSelecionado, setColaboradorSelecionado] = useState<string | null>(null);
 
   const conteudos = {
     missao: 'Oferecer cuidado humanizado e acolhimento seguro para que os idosos vivam com qualidade, autonomia e bem-estar.',
@@ -36,13 +37,47 @@ export default function Home() {
     filosofia: 'Baseado na dignidade, liberdade e valorização da história de vida de cada residente.',
   };
 
+
+  const colaboradores = {
+    "Cleiton Assis Pinto": {
+      nome: "Cleiton Assis Pinto",
+      idade: 45,
+      formacao: "Cuidador de idosos sênior",
+      email: "cleiton.pinto@gmail.com",
+      imagem: "/colaboradores/cleiton.png", 
+    },
+    "Larissa Taxad": {
+      nome: "Larissa Taxad",
+      idade: 27,
+      formacao: "Auxiliar de vida sênior",
+      email: "larissa.taxad@gmail.com",
+      imagem: '/colaboradores/larissa.png',
+    },
+    "Jair Messiano": {
+      nome: "Jair Messiano",
+      idade: 40,
+      formacao: "Auxiliar de cuidador de idosos",
+      email: "jair.messiano@gmail.com",
+      imagem: '/colaboradores/jair.png',
+    },
+  };
+
+  const abrirModal = (nome: string) => {
+    setColaboradorSelecionado(nome);
+    setModalAberto(true);
+  };
+
+  const fecharModal = () => {
+    setModalAberto(false);
+    setColaboradorSelecionado(null);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndexAtual((prevIndex) => (prevIndex + 1) % imagensCarrossel.length);
-    }, 3000); // troca a cada 3 segundos
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
-
 
   return (
     <main className={styles.container}>
@@ -51,24 +86,22 @@ export default function Home() {
         <div>
           <Image src={logo} alt='logo' className={styles.navbarIcon} />
         </div>
-        <div>
+        <Link href="/perfil">
           <Image src={user} alt='user' className={styles.navbarIcon} />
-        </div>
+        </Link>
       </nav>
 
       {/* Hero Section */}
       <section className={styles.hero}>
         <div
           className={styles.heroBackground}
-          style={{
-            backgroundImage: `url(${imagensCarrossel[indexAtual]})`,
-          }}
+          style={{ backgroundImage: `url(${imagensCarrossel[indexAtual]})` }}
         >
           <div className={styles.heroOverlay}>
             <div className={styles.heroText}>
               <p>
-              Grand Club Florença é uma empresa especializada no cuidado e bem-estar de idosos, fundada em 14 de março de 2023. Desde sua criação,
-               a instituição tem como missão oferecer um ambiente seguro, acolhedor e humanizado para a terceira idade, priorizando a qualidade de vida,
+                Grand Club Florença é uma empresa especializada no cuidado e bem-estar de idosos, fundada em 14 de março de 2023. Desde sua criação,
+                a instituição tem como missão oferecer um ambiente seguro, acolhedor e humanizado para a terceira idade, priorizando a qualidade de vida,
                 a autonomia e o respeito à individualidade de cada residente.
               </p>
             </div>
@@ -77,15 +110,14 @@ export default function Home() {
       </section>
 
       {/* Ícones com Botões */}
-
       <section className={styles.section}>
         <div className={styles.buttonGroup}>
           <button
             className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'missao' ? styles.ativo : ''}`}
             onClick={() => setBotaoAtivo(botaoAtivo === 'missao' ? null : 'missao')}
           >
-           {botaoAtivo === null && <Image src={objetivoImg} alt='Objetivo' className={styles.iconImage} />}
-           {botaoAtivo === 'missao' && <Image src={objetivoImg} alt='Objetivo' className={styles.iconAtivo} />}
+            {botaoAtivo === null && <Image src={objetivoImg} alt='Objetivo' className={styles.iconImage} />}
+            {botaoAtivo === 'missao' && <Image src={objetivoImg} alt='Objetivo' className={styles.iconAtivo} />}
             <span className={styles.buttonLabel}>MISSÃO</span>
             {botaoAtivo === 'missao' && (
               <p className={styles.buttonText}>{conteudos.missao}</p>
@@ -96,9 +128,8 @@ export default function Home() {
             className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'valores' ? styles.ativo : ''}`}
             onClick={() => setBotaoAtivo(botaoAtivo === 'valores' ? null : 'valores')}
           >
-
             {botaoAtivo === null && <Image src={cuidadoImg} alt='Cuidado' className={styles.iconImage} />}
-            {botaoAtivo === 'valores' && <Image src={cuidadoImg} alt='Cuidado' className={styles.iconAtivo}/>}
+            {botaoAtivo === 'valores' && <Image src={cuidadoImg} alt='Cuidado' className={styles.iconAtivo} />}
             <span className={styles.buttonLabel}>VALORES</span>
             {botaoAtivo === 'valores' && (
               <p className={styles.buttonText}>{conteudos.valores}</p>
@@ -109,34 +140,53 @@ export default function Home() {
             className={`${styles.iconButton} ${cinzel.className} ${botaoAtivo === 'filosofia' ? styles.ativo : ''}`}
             onClick={() => setBotaoAtivo(botaoAtivo === 'filosofia' ? null : 'filosofia')}
           >
-            
-           {botaoAtivo === null && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconImage} />}
-           {botaoAtivo === 'filosofia' && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconAtivo}/>}
+            {botaoAtivo === null && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconImage} />}
+            {botaoAtivo === 'filosofia' && <Image src={localizacaoImg} alt='Filosofia' className={styles.iconAtivo} />}
             <span className={styles.buttonLabel}>FILOSOFIA</span>
             {botaoAtivo === 'filosofia' && (
               <p className={styles.buttonText}>{conteudos.filosofia}</p>
             )}
           </button>
         </div>
-        <div className={styles.colaboradores}>
 
-        <h2>CONHEÇA NOSSOS COLABORADORES</h2>
-        <div className={styles.names}>
-          <div className={styles.person}>
-            <Image src={user} alt='user' className={styles.iconImage} />
-            Gelson Assis Pinto</div>
-          <div className={styles.person}>
-            <Image src={user} alt='user' className={styles.iconImage} />
-            Larissa Tosati</div>
-          <div className={styles.person}>
-            <Image src={user} alt='user' className={styles.iconImage} />
-            Jair Messiano</div>
-        </div>
+        {/* Colaboradores */}
+        <div className={styles.colaboradores}>
+          <h2>CONHEÇA NOSSOS COLABORADORES</h2>
+          <div className={styles.names}>
+            {Object.keys(colaboradores).map((nome) => (
+              <div key={nome} className={styles.person} onClick={() => abrirModal(nome)}>
+                <Image src={user} alt='user' className={styles.iconImage} />
+                {nome}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-
-      
+      {/* Modal */}
+     {modalAberto && colaboradorSelecionado && (
+  <div className={styles.modalOverlay} onClick={fecharModal}>
+    <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+      <Image
+        src={colaboradores[colaboradorSelecionado].imagem}
+        alt="Foto do colaborador"
+        className={styles.modalImage}
+        width={180}
+        height={180}
+      />
+      <div className={styles.modalInfoContainer}>
+        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].nome}</div>
+        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].idade} anos</div>
+        <div className={styles.modalInfo}>{colaboradores[colaboradorSelecionado].formacao}</div>
+        <div className={styles.modalInfo}>
+          <a href={`mailto:${colaboradores[colaboradorSelecionado].email}`}>
+            {colaboradores[colaboradorSelecionado].email}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Footer */}
       <footer className={`${styles.footer} ${cinzel.className}`}>
