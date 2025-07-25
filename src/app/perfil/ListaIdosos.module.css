@@ -23,15 +23,23 @@
 }
 
 .titulo {
-  background-color: #5e0000; /* vinho escuro */
+  background-color: #5e0000;
   color: white;
   font-weight: bold;
-  padding: 0.7rem 37.2rem;
+  padding: 0.7rem 2rem;
   border-radius: 10px;
-  text-align: left;
-  width: fit-content;
-  margin: 1rem auto 1rem 19rem; 
-  font-size: 0.9rem;
+  text-align: center;
+  width: 90%;
+  max-width: 800px;
+  margin: 1rem auto;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .titulo {
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
 }
 
 
@@ -130,3 +138,4 @@
   object-fit: cover;
 
 }
+

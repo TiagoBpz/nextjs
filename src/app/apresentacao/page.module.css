@@ -24,9 +24,11 @@
 
 .navbarIcon {
   width: 50px;
-  height: 70vh;
+  height: auto;
+  max-height: 60px;
   object-fit: contain;
 }
+
 
 /* HERO */
 .hero {
@@ -60,7 +62,8 @@
   background-color: rgba(249, 244, 227, 0.567);
   height: 12vh;
   padding: 1px;
-  max-width: 700vh;
+  
+  width: 100%;
   color: #630202;
   display: flex;
   align-items: center;
@@ -79,7 +82,8 @@
   background-position: center;
   background-repeat: no-repeat;
   color: #000;
-  height: 800px;
+  height: auto;
+  min-height: 800px;
   padding: 3rem 1rem;
   text-align: center;
   z-index: 999;
@@ -87,6 +91,7 @@
 
 .buttonGroup {
   display: flex;
+  padding-bottom: 10px;
   justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
@@ -114,7 +119,7 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  overflow: hidden;
+  
   position: relative;
   flex-direction: row;
   transition: all 0.5s ease;
@@ -150,13 +155,13 @@
   padding: 20px 15px;
   align-items: flex-start;
   text-align: left;
-  margin-bottom: -100px;
+  margin-bottom: 1rem;
 }
 
 
 .iconAtivo {
   width: 60px;
-  height: 100px;
+  height: 70px;
   margin-bottom: 8px;
   align-self: center;
   padding-top: 10px;
@@ -196,7 +201,8 @@
   padding: 2rem 1rem;
   text-align: center;
   margin-top: 15vh;
-  height: 40vh;
+  height: auto;
+  padding-bottom: 4rem;
   font-family: 'Cinzel', serif;
   font-weight: bold;
   z-index: 999;
@@ -345,5 +351,75 @@
   transform: scale(1.1);
 }
 
+@media (max-width: 768px) {
 
 
+  .buttonText {
+    font-size: 0.8rem;
+  }
+
+  .buttonLabel {
+    opacity: 1; /* Sempre visível no mobile */
+    transform: none;
+    margin-top: 0.5rem;
+  }
+
+  .iconButton:hover .iconImage,
+  .iconButton:hover .buttonLabel {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .footerCenter {
+    padding: 0;
+    font-size: 1rem;
+    align-items: center;
+  }
+
+  .footerRight {
+    position: static;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+}
+@media (max-width: 768px) {
+  .heroText {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    height: auto;
+    padding: 1rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .buttonGroup {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .iconButton {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .ativo {
+    height: auto;
+    align-items: flex-start;
+  }
+
+  .buttonText {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}

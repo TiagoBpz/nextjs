@@ -26,7 +26,7 @@ export default function ListaIdosos() {
   useEffect(() => {
     async function fetchList() {
       try {
-        const response = await api.get("/list"); // sua API deve responder com todos os registros da tabela
+        const response = await api.get("/list"); 
         setList(response.data);
       } catch (error) {
         console.error("Erro ao buscar lista:", error);
@@ -65,13 +65,10 @@ export default function ListaIdosos() {
                 className={styles.iconp}
                 width={80}
                 height={80}
-                unoptimized // usar isso se ainda não quiser configurar domínio externo
+                unoptimized 
               />
               <div className={styles.infoCinza}>{idoso.name}</div>
               <div className={styles.infoCinza}>{idoso.bornAge}</div>
-              <button className={styles.botaoRotina}>
-                Visualizar lista de rotina
-              </button>
             </div>
 
             <div className={styles.infoCinza}>Quarto {idoso.roomNumber}</div>
